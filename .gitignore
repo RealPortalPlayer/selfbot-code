@@ -1,0 +1,15 @@
+# vscode data
+.vscode/
+
+# enviroment data
+.env
+
+# node packages
+node_modules
+
+# database data
+json.sqlite
+
+# cache files
+.DS_Store
+Thumbs.db
