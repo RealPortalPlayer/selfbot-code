@@ -2,13 +2,15 @@ const {basename} = require("path")
 
 const {getUser} = require("../../../api/arguments/getuser")
 const {createEmbed} = require("../../../api/embed/createembed")
+const {settings} = require("../../../api/settings/usersettings")
 
 class Command {
     constructor() {
         this.name = basename(__filename.split(".")[0])
         this.description = "Used for debuging commands."
-        this.arguments = "<user>"
+        this.arguments = ["<arg with space>"]
         this.enabled = true
+        this.example = ""
     }
 
     run(bot, msg, args) {

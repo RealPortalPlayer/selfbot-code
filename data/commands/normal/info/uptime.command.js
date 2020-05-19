@@ -8,7 +8,7 @@ class Command {
     constructor() {
         this.name = basename(__filename.split(".")[0])
         this.description = "See how long i've been up."
-        this.arguments = ""
+        this.arguments = [""]
         this.userPermission = "SEND_MESSAGES"
         this.botPermission = "SEND_MESSAGES"
         this.dms = true
@@ -16,10 +16,11 @@ class Command {
         this.botOwnerOnly = false
         this.supportGuildOnly = false
         this.time = convertTime(settings.cooldown.time, settings.cooldown.type)
+        this.example = ""
     }
 
     run(bot, msg, args) {
-        msg.channel.send(createEmbed(`I've stayed up for \`${bot.startedOn}\``, {}, "", ""))
+        msg.channel.send(createEmbed(`I've stayed up since \`${bot.startedOn}\``, {}, "", ""))
     }
 }
 

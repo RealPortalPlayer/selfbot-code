@@ -10,7 +10,7 @@ class Command {
     constructor() {
         this.name = basename(__filename.split(".")[0])
         this.description = "Small test command (will be disabled soon)"
-        this.arguments = ""
+        this.arguments = [""]
         this.userPermission = "SEND_MESSAGES"
         this.botPermission = "EMBED_LINKS"
         this.dms = true
@@ -18,6 +18,7 @@ class Command {
         this.botOwnerOnly = false
         this.supportGuildOnly = false
         this.time = convertTime(settings.cooldown.time, settings.cooldown.type)
+        this.example = ""
     }
 
     run(bot, msg, args) {
