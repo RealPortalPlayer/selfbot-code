@@ -21,7 +21,7 @@ class Command {
     }
 
     run(bot, msg, args) {
-        msg.channel.send(createEmbed("Test"))
+        msg.channel.send(createEmbed("Test", {}, "", "", ["Witty", "OOf"]))
     }
 }
 

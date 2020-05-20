@@ -185,4 +185,12 @@ bot.on("message", msg => {
 	}
 })
 
+bot.on("messageUpdate", (oldmsg, msg) => {
+	if (!isBlacklisted(msg.author.id) && !msg.author.bot && msg.content.toLowerCase().startsWith(settings.normalPrefix.toLowerCase()) && msg.content !== settings.normalPrefix) {
+		runCommand(bot, msg)
+	} else if (!isBlacklisted(msg.author.id) && !msg.author.bot && msg.content.toLowerCase().startsWith(settings.managePrefix.toLowerCase()) && msg.content !== settings.managePrefix) {
+		runManageCommand(bot, msg)
+	}
+})
+
 bot.login(process.env.TOKEN)

@@ -21,7 +21,7 @@ function createEmbed(description, fields = {}, imageURL = "", title = "", wittyC
     }
 
     if (wittyComments.length === 1) embed.setFooter(wittyComments[0])
-    else getWittyComment(wittyComments)
+    else embed.setFooter(getWittyComment(wittyComments))
 
     if (imageURL) embed.setImage(imageURL)
 

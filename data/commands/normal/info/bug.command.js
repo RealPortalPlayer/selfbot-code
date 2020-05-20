@@ -8,7 +8,7 @@ const {bug} = require("../../../api/guild/log")
 class Command {
     constructor() {
         this.name = basename(__filename.split(".")[0])
-        this.description = "Small test command (will be disabled soon)"
+        this.description = "Report a bug you noticed."
         this.arguments = ["<description>"]
         this.userPermission = "SEND_MESSAGES"
         this.botPermission = "SEND_MESSAGES"

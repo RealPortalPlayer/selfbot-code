@@ -9,7 +9,6 @@ function getUser(user, msg) {
             let id = "0"
 
             msg.guild.members.cache.forEach((member) => {
-                console.log(member)
                 if (member.user.username.toLowerCase().includes(user) || member.user.id === user || member.nickname && member.nickname.toLowerCase().includes(user)) {
                     id = (parseInt(id) + 1).toString()
                     users[id] = {
@@ -18,7 +17,8 @@ function getUser(user, msg) {
                         "nickname": member.nickname,
                         "discriminator": member.user.discriminator,
                         "avatarURL": member.user.avatarURL,
-                        "joinDate": member.user.joinedAt
+                        "joinDate": member.user.joinedAt,
+                        "bot": member.user.bot
                     }
                 }
             })

@@ -6,7 +6,7 @@ const {settings} = require("../../../api/settings/botsettings")
 class Command {
     constructor() {
         this.name = basename(__filename.split(".")[0])
-        this.description = "Small test command (will be disabled soon)"
+        this.description = "Make me say anything!"
         this.arguments = ["<message>"]
         this.userPermission = "SEND_MESSAGES"
         this.botPermission = "SEND_MESSAGES"

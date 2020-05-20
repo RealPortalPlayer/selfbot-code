@@ -29,7 +29,7 @@ class Command {
                 const categoryInfo = new categoryInfoFile.Category()
 
                 if (categoryInfo.supportGuildOnly && settings.supportGuild !== msg.guild.id) return
-                if (categoryInfo.botOwnerOnly && !isBotOwner(msg.author.id)) return
+                if (categoryInfo.botOwnerOnly && !isBotOwner(msg.author.id)[0]) return
 
                 categoryCommands[categoryInfo.name] = [categoryInfo.description, true]
             })
@@ -46,7 +46,7 @@ class Command {
                 if (category.toLowerCase() === args[0].toLowerCase()) {
                     bot.insideNormalCategoryList[category].forEach(file => {
                         if (!file.enabled) return
-                        if (file.botOwnerOnly && !isBotOwner(msg.author.id)) return
+                        if (file.botOwnerOnly && !isBotOwner(msg.author.id)[0]) return
                         if (file.supportGuildOnly && msg.guild.id !== settings.supportGuild) return
                         if (!file.dms && msg.channel.type === "dm") return
                         if (msg.channel.type !== "dm") {
@@ -61,7 +61,7 @@ class Command {
                         bot.insideNormalCategoryList[category].forEach(file => {
                             if (file.name === args[0]) {
                                 if (!file.enabled) return
-                                if (file.botOwnerOnly && !isBotOwner(msg.author.id)) return
+                                if (file.botOwnerOnly && !isBotOwner(msg.author.id)[0]) return
                                 if (file.supportGuildOnly && msg.guild.id !== settings.supportGuild) return
                                 if (!file.dms && msg.channel.type === "dm") return
                                 if (msg.channel.type !== "dm") {

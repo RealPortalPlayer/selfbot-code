@@ -9,7 +9,7 @@ const {createEmbed} = require("../../../api/embed/createembed")
 class Command {
     constructor() {
         this.name = basename(__filename.split(".")[0])
-        this.description = "Small test command (will be disabled soon)"
+        this.description = "Get a picture of a little doggy."
         this.arguments = [""]
         this.userPermission = "SEND_MESSAGES"
         this.botPermission = "EMBED_LINKS"

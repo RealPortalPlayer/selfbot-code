@@ -8,7 +8,7 @@ const {suggest} = require("../../../api/guild/log")
 class Command {
     constructor() {
         this.name = basename(__filename.split(".")[0])
-        this.description = "Small test command (will be disabled soon)"
+        this.description = "Tell us to add something."
         this.arguments = ["<description>"]
         this.userPermission = "SEND_MESSAGES"
         this.botPermission = "SEND_MESSAGES"

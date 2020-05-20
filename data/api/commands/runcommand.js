@@ -18,7 +18,7 @@ function runCommand(bot, msg, command = "") {
 		}).slice(1)
 		
 		if (normalCommand) {
-			if (hasAndGetCooldown(normalCommand.name, msg.author.id)[0] && !isBotOwner(msg.author.id)) {
+			if (hasAndGetCooldown(normalCommand.name, msg.author.id)[0] && !isBotOwner(msg.author.id)[0]) {
 				msg.channel.stopTyping()
 				log(bot, createEmbed("New command ran.", {
 					"Success": [false, true],
@@ -29,7 +29,13 @@ function runCommand(bot, msg, command = "") {
 					"Username": [msg.author.username, true],
 					"Discriminator": [msg.author.discriminator, true],
 					"ID": [msg.author.id, true],
-					"Owner": [isBotOwner(msg.author.id), true]
+					"Owner": [isBotOwner(msg.author.id)[0], true],
+					"Protected Owner": [isBotOwner(msg.author.id)[1], true],
+					"Guild Name": [msg.guild.name, true],
+					"Guild ID": [msg.guild.id, true],
+					"Guild Owner Username": [msg.guild.owner.user.username, true],
+					"Guild Owner Discriminator": [msg.guild.owner.user.discriminator, true],
+					"Guild Owner ID": [msg.guild.ownerID, true]
 				}, "", "", ["Command abuse = Blacklist"]))
 				msg.channel.send(createEmbed(`Please wait \`${humanizeDuration(hasAndGetCooldown(normalCommand.name, msg.author.id)[1] - Date.now(), { round: true })}\`, then try again.`, {}, "", "Command Handler"))
 				return
@@ -45,12 +51,18 @@ function runCommand(bot, msg, command = "") {
 					"Username": [msg.author.username, true],
 					"Discriminator": [msg.author.discriminator, true],
 					"ID": [msg.author.id, true],
-					"Owner": [isBotOwner(msg.author.id), true]
+					"Owner": [isBotOwner(msg.author.id)[0], true],
+					"Protected Owner": [isBotOwner(msg.author.id)[1], true],
+					"Guild Name": [msg.guild.name, true],
+					"Guild ID": [msg.guild.id, true],
+					"Guild Owner Username": [msg.guild.owner.user.username, true],
+					"Guild Owner Discriminator": [msg.guild.owner.user.discriminator, true],
+					"Guild Owner ID": [msg.guild.ownerID, true]
 				}, "", "", ["Command abuse = Blacklist"]))
 				msg.channel.send(createEmbed("This command is currently disabled.", {}, "", "Command Handler"))
 				return
 			}
-			if (normalCommand.botOwnerOnly && !isBotOwner(msg.author.id)) {
+			if (normalCommand.botOwnerOnly && !isBotOwner(msg.author.id)[0]) {
 				msg.channel.stopTyping()
 				log(bot, createEmbed("New command ran.", {
 					"Success": [false, true],
@@ -61,7 +73,13 @@ function runCommand(bot, msg, command = "") {
 					"Username": [msg.author.username, true],
 					"Discriminator": [msg.author.discriminator, true],
 					"ID": [msg.author.id, true],
-					"Owner": [isBotOwner(msg.author.id), true]
+					"Owner": [isBotOwner(msg.author.id)[0], true],
+					"Protected Owner": [isBotOwner(msg.author.id)[1], true],
+					"Guild Name": [msg.guild.name, true],
+					"Guild ID": [msg.guild.id, true],
+					"Guild Owner Username": [msg.guild.owner.user.username, true],
+					"Guild Owner Discriminator": [msg.guild.owner.user.discriminator, true],
+					"Guild Owner ID": [msg.guild.ownerID, true]
 				}, "", "", ["Command abuse = Blacklist"]))
 				msg.channel.send(createEmbed("This command can only be ran by bot owners.", {}, "", "Command Handler"))
 				return
@@ -77,7 +95,13 @@ function runCommand(bot, msg, command = "") {
 					"Username": [msg.author.username, true],
 					"Discriminator": [msg.author.discriminator, true],
 					"ID": [msg.author.id, true],
-					"Owner": [isBotOwner(msg.author.id), true]
+					"Owner": [isBotOwner(msg.author.id)[0], true],
+					"Protected Owner": [isBotOwner(msg.author.id)[1], true],
+					"Guild Name": [msg.guild.name, true],
+					"Guild ID": [msg.guild.id, true],
+					"Guild Owner Username": [msg.guild.owner.user.username, true],
+					"Guild Owner Discriminator": [msg.guild.owner.user.discriminator, true],
+					"Guild Owner ID": [msg.guild.ownerID, true]
 				}, "", "", ["Command abuse = Blacklist"]))
 				msg.channel.send(createEmbed("This command only works in the support guild.", {}, "", "Command Handler"))
 				return
@@ -93,7 +117,13 @@ function runCommand(bot, msg, command = "") {
 					"Username": [msg.author.username, true],
 					"Discriminator": [msg.author.discriminator, true],
 					"ID": [msg.author.id, true],
-					"Owner": [isBotOwner(msg.author.id), true]
+					"Owner": [isBotOwner(msg.author.id)[0], true],
+					"Protected Owner": [isBotOwner(msg.author.id)[1], true],
+					"Guild Name": [msg.guild.name, true],
+					"Guild ID": [msg.guild.id, true],
+					"Guild Owner Username": [msg.guild.owner.user.username, true],
+					"Guild Owner Discriminator": [msg.guild.owner.user.discriminator, true],
+					"Guild Owner ID": [msg.guild.ownerID, true]
 				}, "", "", ["Command abuse = Blacklist"]))
 				msg.channel.send(createEmbed("This command doesn't work in DMs.", {}, "", "Command Handler"))
 				return
@@ -110,7 +140,13 @@ function runCommand(bot, msg, command = "") {
 						"Username": [msg.author.username, true],
 						"Discriminator": [msg.author.discriminator, true],
 						"ID": [msg.author.id, true],
-						"Owner": [isBotOwner(msg.author.id), true]
+						"Owner": [isBotOwner(msg.author.id)[0], true],
+						"Protected Owner": [isBotOwner(msg.author.id)[1], true],
+						"Guild Name": [msg.guild.name, true],
+						"Guild ID": [msg.guild.id, true],
+						"Guild Owner Username": [msg.guild.owner.user.username, true],
+						"Guild Owner Discriminator": [msg.guild.owner.user.discriminator, true],
+						"Guild Owner ID": [msg.guild.ownerID, true]
 					}, "", "", ["Command abuse = Blacklist"]))
 					msg.channel.send(createEmbed(`You require the \`${normalCommand.userPermission}\` permission to run this command.`, {}, "", "Command Handler"))
 					return
@@ -126,7 +162,13 @@ function runCommand(bot, msg, command = "") {
 						"Username": [msg.author.username, true],
 						"Discriminator": [msg.author.discriminator, true],
 						"ID": [msg.author.id, true],
-						"Owner": [isBotOwner(msg.author.id), true]
+						"Owner": [isBotOwner(msg.author.id)[0], true],
+						"Protected Owner": [isBotOwner(msg.author.id)[1], true],
+						"Guild Name": [msg.guild.name, true],
+						"Guild ID": [msg.guild.id, true],
+						"Guild Owner Username": [msg.guild.owner.user.username, true],
+						"Guild Owner Discriminator": [msg.guild.owner.user.discriminator, true],
+						"Guild Owner ID": [msg.guild.ownerID, true]
 					}, "", "", ["Command abuse = Blacklist"]))
 					msg.channel.send(createEmbed(`I require the \`${normalCommand.botPermission}\` permission to run this command.`, {}, "", "Command Handler"))
 					return
@@ -144,7 +186,13 @@ function runCommand(bot, msg, command = "") {
 					"Username": [msg.author.username, true],
 					"Discriminator": [msg.author.discriminator, true],
 					"ID": [msg.author.id, true],
-					"Owner": [isBotOwner(msg.author.id), true]
+					"Owner": [isBotOwner(msg.author.id)[0], true],
+					"Protected Owner": [isBotOwner(msg.author.id)[1], true],
+					"Guild Name": [msg.guild.name, true],
+					"Guild ID": [msg.guild.id, true],
+					"Guild Owner Username": [msg.guild.owner.user.username, true],
+					"Guild Owner Discriminator": [msg.guild.owner.user.discriminator, true],
+					"Guild Owner ID": [msg.guild.ownerID, true]
 				}, "", "", ["Command abuse = Blacklist"]))
 				msg.channel.send(createEmbed(`You're missing the \`${missingArgs}\` ${missingArgs.split(" ").length === 1 ? "argument" : "arguments"}.`, {}, "", "Command Handler"))
 				return
@@ -164,7 +212,13 @@ function runCommand(bot, msg, command = "") {
 				"Username": [msg.author.username, true],
 				"Discriminator": [msg.author.discriminator, true],
 				"ID": [msg.author.id, true],
-				"Owner": [isBotOwner(msg.author.id), true]
+				"Owner": [isBotOwner(msg.author.id)[0], true],
+				"Protected Owner": [isBotOwner(msg.author.id)[1], true],
+				"Guild Name": [msg.guild.name, true],
+				"Guild ID": [msg.guild.id, true],
+				"Guild Owner Username": [msg.guild.owner.user.username, true],
+				"Guild Owner Discriminator": [msg.guild.owner.user.discriminator, true],
+				"Guild Owner ID": [msg.guild.ownerID, true]
 			}, "", "", ["Command abuse = Blacklist"]))
 			
 			bot.normalCommandList.get(normalCommand.name).run(bot, msg, args)
@@ -192,7 +246,7 @@ function runManageCommand(bot, msg, command) {
             msg.channel.send(createEmbed("This command is currently disabled.", {}, "", "Command Handler"))
             return
         }
-        if (!isBotOwner(msg.author.id)) {
+        if (!isBotOwner(msg.author.id)[0]) {
             msg.channel.send(createEmbed("This command can only be ran by bot owners.", {}, "", "Command Handler"))
             return
         }
