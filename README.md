@@ -12,4 +12,6 @@ To get a `cat and dog` token, click [here](https://thecatapi.com/signup) and put
 
 Then open up a console, then type `npm install` to install all the dependencies.
 
+Before you are done, please go to `data/api/settings/botsettings.js` and edit everything inside it.
+
 Then type `npm start` to start it! The website source code will be released soon, once I finish it.

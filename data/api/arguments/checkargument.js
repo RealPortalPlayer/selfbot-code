@@ -12,7 +12,14 @@ function checkArgument(commandArgs, userArgs) {
             requiredArgs = requiredArgs.trim()
 
             if (requiredArgs.split(" ").length > userArgs.length) {
-                return [false, requiredArgs.split(" ").slice(userArgs.length).join(" ")]
+                let caught = 0
+
+                requiredArgs.split(" ").slice(userArgs.length).forEach(arg => {
+                    if (arg.startsWith("<")) caught++
+                })
+
+                if (caught) return [false, requiredArgs.split(" ").slice(userArgs.length).join(" ")]
+                else return [true]
             } else return [true]
         }
         

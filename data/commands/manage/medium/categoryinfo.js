@@ -1,7 +1,7 @@
 class Category {
     constructor() {
         this.name = "Medium"
-        this.description = "Every command that could, but isn't always, break the bot."
+        this.description = "So-So Commands"
     }
 }
 

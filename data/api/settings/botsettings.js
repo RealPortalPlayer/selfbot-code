@@ -18,7 +18,7 @@ const settings = {
 		}
 	},
 	"cooldown": {
-		"time": 10,
+		"time": 3,
 		"type": "seconds"
 	}
 }

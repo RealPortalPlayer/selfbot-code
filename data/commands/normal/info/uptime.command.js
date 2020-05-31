@@ -7,7 +7,8 @@ const {createEmbed} = require("../../../api/embed/createembed")
 class Command {
     constructor() {
         this.name = basename(__filename.split(".")[0])
-        this.description = "See how long i've been up."
+        this.altNames = []
+        this.description = "Tell how Long I Have Been Awake"
         this.arguments = [""]
         this.userPermission = "SEND_MESSAGES"
         this.botPermission = "SEND_MESSAGES"
@@ -20,7 +21,11 @@ class Command {
     }
 
     run(bot, msg, args) {
-        msg.channel.send(createEmbed(`I've stayed up since \`${bot.startedOn}\``, {}, "", ""))
+        return new Promise(resolve => {
+            msg.channel.send(createEmbed(msg, bot, false, `I have stayed awake since \`${bot.startedOn}\``, {}, "", ""))
+            
+            resolve()
+        })
     }
 }
 

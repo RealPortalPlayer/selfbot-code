@@ -2,13 +2,14 @@ const {basename} = require("path")
 
 const {convertTime} = require("../../../api/time/converttime")
 const {settings} = require("../../../api/settings/botsettings")
-const {isBotOwner} = require("../../../api/commands/isbotowner")
+const {getBotOwner} = require("../../../api/commands/getbotowner")
 const {createEmbed} = require("../../../api/embed/createembed")
 
 class Command {
     constructor() {
         this.name = basename(__filename.split(".")[0])
-        this.description = "Gives you info about other commands."
+        this.altNames = ["cmds", "commands"]
+        this.description = "Research About a Command"
         this.arguments = ["[category/command]"]
         this.userPermission = "SEND_MESSAGES"
         this.botPermission = "SEND_MESSAGES"
@@ -21,69 +22,87 @@ class Command {
     }
 
     run(bot, msg, args) {
-        let categoryCommands = {}
+        return new Promise((resolve, reject) => {
+            let categoryCommands = {}
 
-        if (!args[0]) {
-            bot.normalCategoryList.forEach(category => {
-                const categoryInfoFile = require(`../${category}/categoryinfo`)
-                const categoryInfo = new categoryInfoFile.Category()
+            if (!args[0]) {
+                bot.normalCategoryList.forEach(category => {
+                    const categoryInfoFile = require(`../${category}/categoryinfo`)
+                    const categoryInfo = new categoryInfoFile.Category()
 
-                if (categoryInfo.supportGuildOnly && settings.supportGuild !== msg.guild.id) return
-                if (categoryInfo.botOwnerOnly && !isBotOwner(msg.author.id)[0]) return
+                    let commandCount = 0
 
-                categoryCommands[categoryInfo.name] = [categoryInfo.description, true]
-            })
-
-            if (Object.keys(categoryCommands)[0]) {
-                msg.channel.send(createEmbed("", categoryCommands))
-                return
-            } else {
-                msg.channel.send(createEmbed("I've found nothing, please contact support for more info."))
-                return
-            }
-        } else {
-            bot.normalCategoryList.forEach(category => {
-                if (category.toLowerCase() === args[0].toLowerCase()) {
                     bot.insideNormalCategoryList[category].forEach(file => {
-                        if (!file.enabled) return
-                        if (file.botOwnerOnly && !isBotOwner(msg.author.id)[0]) return
+                        if (!file.enabled && !getBotOwner(msg.author.id).botOwner) return
+                        if (file.botOwnerOnly && !getBotOwner(msg.author.id).botOwner) return
                         if (file.supportGuildOnly && msg.guild.id !== settings.supportGuild) return
                         if (!file.dms && msg.channel.type === "dm") return
-                        if (msg.channel.type !== "dm") {
+                        if (msg.channel.type === "text") {
                             if (msg.author.id !== msg.guild.ownerID && !msg.member.hasPermission("ADMINISTRATOR") && !msg.member.hasPermission(file.userPermission)) return
                             if (!msg.guild.me.hasPermission("ADMINISTRATOR") && !msg.guild.me.hasPermission(file.botPermission)) return
                         }
 
-                        categoryCommands[file.name] = [`${file.description}${file.arguments[0].trim() ? `\nArgument${file.arguments.length > 1 ? "s" : ""}: ${file.arguments.join(" ")}` : ""}${file.example.trim() ? `\nExample: ${file.example}` : ""}`, true]
+                        commandCount++
                     })
+
+                    if (commandCount) categoryCommands[categoryInfo.name] = [categoryInfo.description, true]
+                })
+
+                if (Object.keys(categoryCommands)[0]) {
+                    msg.channel.send(createEmbed(msg, bot, false, "", categoryCommands))
+
+                    resolve()
                 } else {
-                    bot.normalCategoryList.forEach(category => {
-                        bot.insideNormalCategoryList[category].forEach(file => {
-                            if (file.name === args[0]) {
-                                if (!file.enabled) return
-                                if (file.botOwnerOnly && !isBotOwner(msg.author.id)[0]) return
-                                if (file.supportGuildOnly && msg.guild.id !== settings.supportGuild) return
-                                if (!file.dms && msg.channel.type === "dm") return
-                                if (msg.channel.type !== "dm") {
-                                    if (msg.author.id !== msg.guild.ownerID && !msg.member.hasPermission("ADMINISTRATOR") && !msg.member.hasPermission(file.userPermission)) return
-                                    if (!msg.guild.me.hasPermission("ADMINISTRATOR") && !msg.guild.me.hasPermission(file.botPermission)) return
-                                }
+                    msg.channel.send(createEmbed(msg, bot, false, "I've found nothing, please contact support for more info."))
 
-                                categoryCommands[file.name] = [`${file.description}${file.arguments[0].trim() ? `\nArgument${file.arguments.length > 1 ? "s" : ""}: ${file.arguments.join(" ")}${file.example.trim() ? `\nExample: ${file.example}` : ""}` : ""}`, true]
-                            }
-                        })
-                    })
+                    reject("Found nothing")
                 }
-            })
-
-            if (Object.keys(categoryCommands)[0]) {
-                msg.channel.send(createEmbed("", categoryCommands))
-                return
             } else {
-                msg.channel.send(createEmbed("That's not a valid command/category."))
-                return
+                bot.normalCategoryList.forEach(category => {
+                    if (category.toLowerCase() === args[0].toLowerCase()) {
+                        bot.insideNormalCategoryList[category].forEach(file => {
+                            if (!file.enabled && !getBotOwner(msg.author.id).botOwner) return
+                            if (file.botOwnerOnly && !getBotOwner(msg.author.id).botOwner) return
+                            if (file.supportGuildOnly && msg.guild.id !== settings.supportGuild) return
+                            if (!file.dms && msg.channel.type === "dm") return
+                            if (msg.channel.type === "text") {
+                                if (msg.author.id !== msg.guild.ownerID && !msg.member.hasPermission("ADMINISTRATOR") && !msg.member.hasPermission(file.userPermission)) return
+                                if (!msg.guild.me.hasPermission("ADMINISTRATOR") && !msg.guild.me.hasPermission(file.botPermission)) return
+                            }
+
+                            categoryCommands[file.name] = [`${file.description}${file.arguments[0] ? `\nArgument${file.arguments.length > 1 ? "s" : ""}: ${file.arguments.join(" ")}` : ""}${file.example ? `\nExample: ${file.example}` : ""}`, true]
+                        })
+                    } else {
+                        bot.normalCategoryList.forEach(category => {
+                            bot.insideNormalCategoryList[category].forEach(file => {
+                                if (file.name === args[0]) {
+                                    if (!file.enabled && !getBotOwner(msg.author.id).botOwner) return
+                                    if (file.botOwnerOnly && !getBotOwner(msg.author.id).botOwner) return
+                                    if (file.supportGuildOnly && msg.guild.id !== settings.supportGuild) return
+                                    if (!file.dms && msg.channel.type === "dm") return
+                                    if (msg.channel.type === "text") {
+                                        if (msg.author.id !== msg.guild.ownerID && !msg.member.hasPermission("ADMINISTRATOR") && !msg.member.hasPermission(file.userPermission)) return
+                                        if (!msg.guild.me.hasPermission("ADMINISTRATOR") && !msg.guild.me.hasPermission(file.botPermission)) return
+                                    }
+
+                                    categoryCommands[file.name] = [`${file.description}${file.arguments[0] ? `\nArgument${file.arguments.length > 1 ? "s" : ""}: ${file.arguments.join(" ")}${file.example ? `\nExample: ${file.example}` : ""}` : ""}`, true]
+                                }
+                            })
+                        })
+                    }
+                })
+
+                if (Object.keys(categoryCommands)[0]) {
+                    msg.channel.send(createEmbed(msg, bot, false, "", categoryCommands))
+
+                    resolve()
+                } else {
+                    msg.channel.send(createEmbed(msg, bot, false, "That's not a valid command/category."))
+
+                    reject("Invalid argument")
+                }
             }
-        }
+        })
     }
 }
 
